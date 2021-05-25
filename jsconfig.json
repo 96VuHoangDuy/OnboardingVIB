@@ -1,0 +1,12 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "jsx": "react",
+    "paths": {
+      "*": ["src/*"]
+    }
+  },
+  "exclude": [
+    "node_modules" // Đừng bắt VSCode nó phải chọc vào cái đống trong này.
+  ]
+}

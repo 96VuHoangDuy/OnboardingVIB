@@ -1,0 +1,9 @@
+*.ts
+ios/*
+android/*
+coverage/*
+build/*
+node_modules/*
+assets/*
+*.md
+bitrise.yml
