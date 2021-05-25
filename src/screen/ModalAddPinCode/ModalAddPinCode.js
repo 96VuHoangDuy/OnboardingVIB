@@ -46,7 +46,7 @@ class ModalAddPinCode extends Component {
   sendOtpCode = async () => {
     const { phoneNumber } = this.state;
     const username = 'AC420a23e0626008c3eb6a8fcba250600f';
-    const password = 'acb305411ddb5766ca10996a325722da';
+    const password = '1881474cd6a6c7b98ddedbcf55e1f9b1';
     const formdata = new FormData();
     const headers = new Headers();
     const code = Math.floor(1000 + Math.random() * 900000);
@@ -70,13 +70,13 @@ class ModalAddPinCode extends Component {
     )
       .then((response) => response.json())
       .then((responseJson) => {
-        console.log(responseJson);
+        // console.log(responseJson);
         // this.setState({
         //   data: responseJson,
         // });
       })
       .catch((error) => {
-        console.error(error);
+        // console.error(error);
       });
   };
 
@@ -101,7 +101,7 @@ class ModalAddPinCode extends Component {
     this.focusInput = funcFocusInput;
   };
 
-  onDoneInput = (inputCode, typeModal, blurInput) => {
+  onDoneInput = async (inputCode, typeModal, blurInput) => {
     const { codeVerify, pinCode, step } = this.state;
     // const { navigation } = this.props;
     if (
@@ -165,10 +165,15 @@ class ModalAddPinCode extends Component {
                     }).start();
                     blurInput && blurInput();
                   })()
-                : this.setState({
-                    type: 'verifyOtp',
-                    error: false,
-                  })
+                : this.setState(
+                    {
+                      type: 'verifyOtp',
+                      error: false,
+                    },
+                    () => {
+                      step === 'verifyOtp' && this.sendOtpCode();
+                    }
+                  )
               : this.setState(
                   {
                     step: 'successFaceId',
@@ -258,9 +263,20 @@ class ModalAddPinCode extends Component {
                       paddingLeft: 35,
                       backgroundColor: 'rgba(255, 255, 255, 0.6)',
                       borderRadius: 10,
+                      justifyContent: 'center',
+                      alignItems: 'center',
                     }}
                   />
-                  <Text style={{ position: 'absolute', left: 0, top: 15, marginLeft: 5 }}>+84</Text>
+                  <Text
+                    style={{
+                      position: 'absolute',
+                      left: 0,
+                      marginLeft: 5,
+                      bottom: 15,
+                    }}
+                  >
+                    +84
+                  </Text>
                 </View>
 
                 <TouchableOpacity
@@ -432,7 +448,16 @@ class ModalAddPinCode extends Component {
 
                 <TouchableOpacity
                   onPress={() => {
-                    this.openVerifyOtp();
+                    this.setState({
+                      type: 'verifyCodePinToFaceId',
+                    });
+                    Animated.timing(this.valueAnimation, {
+                      toValue: 1,
+                      duration: 800,
+                      useNativeDriver: true,
+                    }).start(() => {
+                      this.focusInput && this.focusInput();
+                    });
                   }}
                   style={{
                     height: CommonHeights.res50,
